@@ -1,0 +1,143 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "jarvis",
+            "intents": [
+                {
+                    "name": "AMAZON.FallbackIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.NavigateHomeIntent",
+                    "samples": []
+                },
+                {
+                    "name": "OnIntent",
+                    "slots": [
+                        {
+                            "name": "light",
+                            "type": "LIST_OF_LIGHTS"
+                        },
+                        {
+                            "name": "color",
+                            "type": "LIST_OF_COLORS"
+                        },
+                        {
+                            "name": "time",
+                            "type": "AMAZON.DURATION"
+                        }
+                    ],
+                    "samples": [
+                        "turn {light} {color} in {time}",
+                        "set {light} to {color}",
+                        "turn {light} on in {time}",
+                        "turn {light} on",
+                        "turn on {light}",
+                        "turn {light} {color}"
+                    ]
+                },
+                {
+                    "name": "OffIntent",
+                    "slots": [
+                        {
+                            "name": "light",
+                            "type": "LIST_OF_LIGHTS"
+                        },
+                        {
+                            "name": "time",
+                            "type": "AMAZON.DURATION"
+                        }
+                    ],
+                    "samples": [
+                        "turn {light} off in {time}",
+                        "turn {light} off",
+                        "turn off {light}"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "LIST_OF_LIGHTS",
+                    "values": [
+                        {
+                            "id": "17",
+                            "name": {
+                                "value": "table"
+                            }
+                        },
+                        {
+                            "id": "5",
+                            "name": {
+                                "value": "jon snow"
+                            }
+                        },
+                        {
+                            "id": "3",
+                            "name": {
+                                "value": "aria"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "LIST_OF_COLORS",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "white"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "orange"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "green"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "pink"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "purple"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "yellow"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "red"
+                            }
+                        },
+                        {
+                            "id": "49000",
+                            "name": {
+                                "value": "blue"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
