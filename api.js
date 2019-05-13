@@ -7,22 +7,12 @@ var fetch = require('node-fetch');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json())
 var cors = require('cors');
-// var _ = require('lodash');
 
 app.use(cors())
 
 var hueIP = 'http://192.168.0.18';
 var hueUser = 'gDiIztNg3YZOQF3ASNLHlrDj7SppTwLT-12-C-cs';
 var apiUrl = `${hueIP}/api/${hueUser}`
-var activatedLights = [];
-
-// var getHueIP = function() {
-//     $.get( "https://www.meethue.com/api/nupnp", function( body ) {
-//         var ip = body[0] ? body[0].internalipaddress : '0.0.0.0';
-//         hueIP = ip;
-//         $('#ipText').val(ip);
-//     });
-// }
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + 'public/index.html'));
@@ -35,7 +25,13 @@ app.get('/getLights', (req, res) => {
       try {
         const response = await fetch(url);
         const json = await response.json();
-        console.log(json);
+        activatedLights = map(json, (l,i) => {
+            return {
+                name: l.name,
+                id: i
+            }
+        })
+        console.log(activatedLights);
         return res.json(json)
       } catch (error) {
         console.log(error);
@@ -79,7 +75,6 @@ app.get('/getSensors', (req, res) => {
 app.put('/updateLight/:light', (req, res) => {
     let light = req.params.light ? req.params.light : ''
 
-    console.log(req.body);
     const getData = async url => {
       try {
         const response = await fetch(url, {
