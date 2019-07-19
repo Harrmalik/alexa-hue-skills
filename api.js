@@ -9,8 +9,8 @@ const map = require('lodash/map');
 const https = require("https");
 const moment = require("moment");
 // Variables
-const hueIP = 'http://192.168.0.18';
-const hueUser = 'gDiIztNg3YZOQF3ASNLHlrDj7SppTwLT-12-C-cs';
+const hueIP = 'http://172.16.27.6';
+const hueUser = 'fug4sbFVXekCLtpn2GZahanFmClS-NvDsHvEmgum';
 const apiUrl = `${hueIP}/api/${hueUser}`
 let activatedLights = [];
 let sensedPresence = false;

@@ -1,3 +1,7 @@
+body, #root {
+  height: 100%;
+  width: 100%;
+}
 .App {
   text-align: center;
 }
@@ -30,4 +34,27 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.roomControl {
+  width: 50%;
+  height: 50%;
+  float: left;
+  border: 1px solid black;
+  display: flex
+}
+
+.roomControl .segment {
+  margin: auto;
+}
+
+.range-slider .input-range {
+  -webkit-appearance: none;
+  height: 200px;
+  border-radius: 5px;
+  background: #ccc;
+  outline: none;
+  writing-mode: bt-lr; /* IE */
+  -webkit-appearance: slider-vertical; /* WebKit */
+
 }
