@@ -2,8 +2,6 @@
 /* eslint-disable  no-console */
 
 const Alexa = require('ask-sdk');
-const https = require("https");
-const url = 'https://d2dc9193.ngrok.io';
 
 const WelcomeHandler = {
   canHandle(handlerInput) {
@@ -11,106 +9,35 @@ const WelcomeHandler = {
     return request.type === 'LaunchRequest';
   },
   handle(handlerInput) {
-    // DO STUFF HERE
-
     return handlerInput.responseBuilder
       .speak('welcome dawg')
-      .withSimpleCard(SKILL_NAME, 'Playing with lights')
+      .withSimpleCard(SKILL_NAME, 'Playing with passwords')
       .getResponse();
   },
 };
 
-const OnHandler = {
+const TestHandler = {
   canHandle(handlerInput) {
     const request = handlerInput.requestEnvelope.request;
     return (request.type === 'IntentRequest'
-        && request.intent.name === 'OnIntent');
+        && request.intent.name === 'TestIntent');
   },
   handle(handlerInput) {
     console.log(handlerInput.requestEnvelope.request.intent);
-    const lightSlot = handlerInput.requestEnvelope.request.intent.slots.light;
-    const colorSlot = handlerInput.requestEnvelope.request.intent.slots.color;
-    const timeSlot = handlerInput.requestEnvelope.request.intent.slots.time;
-    let light,color,colorParam = '',timeParam = '';
-
-    if (lightSlot) {
-      light = lightSlot.value;
+    const accountSlot = handlerInput.requestEnvelope.request.intent.slots.account;
+    if (accountSlot.value) {
+      let account = accountSlot.value.toLowerCase();
+      
+      return handlerInput.responseBuilder
+        .speak(account)
+        .withSimpleCard(account, `password is password`)
+        .getResponse();
+    } else {
+        return handlerInput.responseBuilder
+          .speak(`What account do you want the password for?`)
+          .withSimpleCard('No account selected', `Please say with an account`)
+          .getResponse();
     }
-
-    if (colorSlot) {
-      let colorInfo = colors.find(c => c.color == colorSlot.value);
-      if (colorInfo) {
-        color = colorInfo.hue;
-        colorParam = `&hue=${color}`;
-      }
-    }
-
-    if (timeSlot) {
-      timeParam = `&time=${timeSlot.value}`;
-    }
-
-    console.log(colorParam);
-    console.log(timeParam);
-
-    https.get(`${url}/updateLight/${light}?on=true${colorParam}${timeParam}`, res => {
-      res.setEncoding("utf8");
-      let body = "";
-      res.on("data", data => {
-        body += data;
-      });
-      res.on("end", () => {
-        body = JSON.parse(body);
-        console.log(body);
-      });
-    });
-
-    return handlerInput.responseBuilder
-      .speak(`
-<speak>
-    Welcome to Car-Fu.
-    <audio src="soundbank://soundlibrary/transportation/amzn_sfx_car_accelerate_01" />
-    You can order a ride, or request a fare estimate.
-    Which will it be?
-</speak>
-      `)
-      .withSimpleCard(light, `Turned on ${light}`)
-      .getResponse();
-  },
-};
-
-const OffHandler = {
-  canHandle(handlerInput) {
-    const request = handlerInput.requestEnvelope.request;
-    return (request.type === 'IntentRequest'
-        && request.intent.name === 'OffIntent');
-  },
-  handle(handlerInput) {
-    console.log(handlerInput.requestEnvelope.request.intent);
-    const light = handlerInput.requestEnvelope.request.intent.slots.light.value;
-    const timeSlot = handlerInput.requestEnvelope.request.intent.slots.time;
-    let timeParam = '';
-
-    if (timeSlot) {
-      timeParam = `&time=${timeSlot.value}`;
-    }
-
-    https.get(`${url}/updateLight/${light}?on=false${timeParam}`, res => {
-      res.setEncoding("utf8");
-      let body = "";
-      res.on("data", data => {
-        body += data;
-      });
-      res.on("end", () => {
-        body = JSON.parse(body);
-        console.log(body);
-      });
-    });
-
-    return handlerInput.responseBuilder
-      .speak(`Turned off ${light}`)
-      .reprompt('Will that be all for today sir.')
-      .withSimpleCard(light, `Turned off ${light}`)
-      .getResponse();
   },
 };
 
@@ -169,32 +96,19 @@ const ErrorHandler = {
 };
 
 const SKILL_NAME = 'Hue App Demo';
-const HELP_MESSAGE = 'You can turn on or off lights by saying turn on table';
+const HELP_MESSAGE = 'Get the password for any account saved';
 const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
-
-const colors = [
-  { color: 'blue', hue: 43237},
-  { color: 'green', hue: 25000},
-  { color: 'yellow', hue: 10911},
-  { color: 'purple', hue: 50000},
-  { color: 'orange', hue: 7266},
-  { color: 'pink', hue: 60000},
-  { color: 'red', hue: 70000},
-  { color: 'white', hue: 41283}
-];
 
 const skillBuilder = Alexa.SkillBuilders.standard();
 
 exports.handler = skillBuilder
   .addRequestHandlers(
     WelcomeHandler,
-    OnHandler,
-    OffHandler,
+    TestHandler,
     HelpHandler,
     ExitHandler,
     SessionEndedRequestHandler
   )
   .addErrorHandlers(ErrorHandler)
   .lambda();
-
